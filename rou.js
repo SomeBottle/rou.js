@@ -7,8 +7,9 @@ var rou = {
     el: '',
     /*element*/
     c: function() { /*checker*/
-        var o = this,u = window.location.href,rq = o.sp(u),ctg = rq.substring(0, 1),k, hk = o.ps.def.ky; /*homekey*/
-        for (var vt in o.ps.cg) if (vt.indexOf(ctg) !== -1 && rq.indexOf(vt) !== -1) {
+        var o = this,u = window.location.href,rq = o.sp(u),ctg,k, hk = o.ps.def.ky; /*homekey*/
+		rq ? (ctg=rq.substring(0, 1)):(ctg=''); /*get category index*/
+        for (var vt in o.ps.cg) if (ctg!==''&&vt.indexOf(ctg) !== -1 && rq.indexOf(vt) !== -1) {
             k = rq.replace(vt, ''); /*get page key*/
             ctg = vt; /*exchange category*/
             break;
