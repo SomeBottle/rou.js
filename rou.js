@@ -8,11 +8,11 @@ var rou = {
     /*element*/
     c: function() { /*checker*/
         var o = this,u = window.location.href,rq = o.sp(u),ctg,k,pagen, hk = o.ps.def.ky;/*homekey*/
-		rq ? (ctg=rq.substring(0, 1),pagen=rq.split('/')):(ctg='',pagen=[]); /*获取页面索引category(!,@之类的)，分割"/"*/
+		rq ? (ctg=rq.substring(0, 1),pagen=rq.split('/')):(ctg='',pagen=[]); /*获取页面索引符category(!,@之类的)，分割"/"*/
 		if(pagen.length>1) rq=pagen[0];/*如果存在页码，自动剔除页码*/
         for (var vt in o.ps.cg) if (ctg!==''&&vt.indexOf(ctg) !== -1 && rq.indexOf(vt) !== -1) {
             k = rq.replace(vt, ''); /*获得请求的页面*/
-            ctg = vt; /*检索多位索引(@@之类的)*/
+            ctg = vt; /*检索多位索引符(@@之类的)*/
             break;
         }
 		pagen.shift();
@@ -47,25 +47,21 @@ var rou = {
     },
     r: function() { /*run/stop*/
         var o = this;
+		o.ev=o.ev||o.c.bind(o);/*绑定对象，事件监听器是在window运行的，因此要让事件实名认证！*/
         if (!o.statu) {
-            window.addEventListener('hashchange', o.c.bind(o));
+            window.addEventListener('hashchange', o.ev);
             o.c();
             o.statu = true;
         } else {
-            window.removeEventListener('hashchange', o.c.bind(o));
+            window.removeEventListener('hashchange', o.ev);
             o.statu = false;
         }
         return o;
     },
     a: function(t, k, ct, c = false, i = false) { /*add(type,key,content(html/func),category,id)*/
         var o = this;
-        if (!i) {
-            i = o.id;
-            o.id += 1;
-        }
-        if (!c) {
-            c = '!';
-        }
+        if (!i) (i = o.id,o.id += 1);/*有没有指定id，不然默认顺承*/
+		c ? c=c : c='!';/*有没有指定索引符，不然就用默认的了*/
         if (t == 'def') {
             o.ps['def'] = {ky: k,id: i,c: ct};
         } else if (t == 'reg') {
@@ -76,9 +72,7 @@ var rou = {
     },
     d: function(t, k, c = false) { /*del(type,key,category)*/
         var o = this;
-        if (!c) {
-            c = '!';
-        }
+        c ? c=c : c='!';/*有没有指定索引符，不然就用默认的了*/
         if (t == 'def') {
             o.ps['def'] = {};
         } else if (t == 'reg') {
