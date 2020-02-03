@@ -7,17 +7,19 @@ var rou = {
     el: '',
     /*element*/
     c: function() { /*checker*/
-        var o = this,u = window.location.href,rq = o.sp(u),ctg,k, hk = o.ps.def.ky; /*homekey*/
-		rq ? (ctg=rq.substring(0, 1)):(ctg=''); /*get category index*/
+        var o = this,u = window.location.href,rq = o.sp(u),ctg,k,pagen, hk = o.ps.def.ky;/*homekey*/
+		rq ? (ctg=rq.substring(0, 1),pagen=rq.split('/')):(ctg='',pagen=[]); /*获取页面索引category(!,@之类的)，分割"/"*/
+		if(pagen.length>1) rq=pagen[0];/*如果存在页码，自动剔除页码*/
         for (var vt in o.ps.cg) if (ctg!==''&&vt.indexOf(ctg) !== -1 && rq.indexOf(vt) !== -1) {
-            k = rq.replace(vt, ''); /*get page key*/
-            ctg = vt; /*exchange category*/
+            k = rq.replace(vt, ''); /*获得请求的页面*/
+            ctg = vt; /*检索多位索引(@@之类的)*/
             break;
         }
+		pagen.shift();
         if (u.indexOf('#') !== -1 && rq !== hk) {
             var r = o.j(ctg, k)['c'],i = o.j(ctg, k)['id'];
             if (typeof r == 'function') {
-                r(k, i); /*(page,id)*/
+                r(k, i,pagen); /*(请求的页面,页面id,页码)例如http://xxx/#!index/2，返回的k=index,pagen=[2]*/
             } else if (r !== '') {
                 o.el.innerHTML = r;
             }
@@ -25,7 +27,7 @@ var rou = {
             var r = o.ps['def']['c'],i = o.ps['def']['id'];
             if (!rq) window.location.href += '#' + hk;
             if (typeof r == 'function') {
-                r('home', i); /*(page,id)*/
+                r('home',i,pagen); /*(page,id)*/
             } else {
                 o.el.innerHTML = r;
             }
