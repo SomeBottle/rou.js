@@ -18,7 +18,7 @@
   1. mode->注册模式.要注册主页,模式是'def';要注册普通页面，模式是'reg'.如果注册了主页，加载页面时如果url没有hash，则会自动跳转到主页.  
   2. key->注册的页面hash键.  
   3. func/html->该页面要执行的函数/要打印的html.**当该项为函数时**，默认有两个回调变量key和id,key是该页的hash键,id是该页的注册id.  
-  4. category->注册页面的分类（不支持问号?），**如果不填，默认是'!'**.假设category是'!',key是'page',则访问 http://xxx/#!page 时会执行func/html.  
+  4. category->注册页面的分类（**不支持问号?和空白**），**如果不填，默认是'!'**.假设category是'!',key是'page',则访问 http://xxx/#!page 时会执行func/html.  
   5. id->注册页面的id，如果不填就是自动生成，通过自定义你可以定义文章的页面唯一id.    
   
 * 运转吧！  
