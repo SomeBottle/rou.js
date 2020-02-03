@@ -1,5 +1,5 @@
 var rou = {
-	ps:{def:{},cg: {}},
+    ps: {def: {},cg: {}},
     /*routes*/
     statu: false,
     /*ifrun*/
@@ -7,17 +7,22 @@ var rou = {
     el: '',
     /*element*/
     c: function() { /*checker*/
-	    var o = this,u = window.location.href,rq = o.sp(u),hk=o.ps['def']['ky'];/*homekey*/
+        var o = this,u = window.location.href,rq = o.sp(u),ctg = rq.substring(0, 1),k, hk = o.ps.def.ky; /*homekey*/
+        for (var vt in o.ps.cg) if (vt.indexOf(ctg) !== -1 && rq.indexOf(vt) !== -1) {
+            k = rq.replace(vt, ''); /*get page key*/
+            ctg = vt; /*exchange category*/
+            break;
+        }
         if (u.indexOf('#') !== -1 && rq !== hk) {
-            var ctg = rq.substring(0, 1),k = rq.replace(ctg, ''),r = o.j(ctg,k)['c'],i = o.j(ctg,k)['id'];
+            var r = o.j(ctg, k)['c'],i = o.j(ctg, k)['id'];
             if (typeof r == 'function') {
                 r(k, i); /*(page,id)*/
-            } else if(r !== ''){
+            } else if (r !== '') {
                 o.el.innerHTML = r;
             }
         } else if (hk) {
             var r = o.ps['def']['c'],i = o.ps['def']['id'];
-			if(!rq) window.location.href+='#'+hk;
+            if (!rq) window.location.href += '#' + hk;
             if (typeof r == 'function') {
                 r('home', i); /*(page,id)*/
             } else {
@@ -25,14 +30,13 @@ var rou = {
             }
         }
     },
-	j:function(c,k){
-		var mc=this.ps['cg'][c];
-		const b=this.ps['cg'][c] || {[k]:{c:'',i:''}};
-		return b[k]||{c:'',i:''};
-	},
+    j: function(c, k) {
+        const b = this.ps['cg'][c] || {[k]: {c: '',i: ''}};
+        return b[k] || {c: '',i: ''};
+    },
     x: function(e) { /*elementselector*/
         this.el = document.getElementById(e);
-		return this;
+        return this;
     },
     sp: function(y) { /*splitter*/
         var s = y.split('?');
@@ -48,9 +52,9 @@ var rou = {
             window.removeEventListener('hashchange', o.c.bind(o));
             o.statu = false;
         }
-		return o;
+        return o;
     },
-    a: function(t, k, ct, c = false,i = false) { /*add(type,key,content(html/func),category,id)*/
+    a: function(t, k, ct, c = false, i = false) { /*add(type,key,content(html/func),category,id)*/
         var o = this;
         if (!i) {
             i = o.id;
@@ -60,17 +64,10 @@ var rou = {
             c = '!';
         }
         if (t == 'def') {
-            o.ps['def'] = {
-				ky:k,
-                id: i,
-                c: ct
-            };
+            o.ps['def'] = {ky: k,id: i,c: ct};
         } else if (t == 'reg') {
-            if(!o.ps['cg'][c]) o.ps['cg'][c]={};
-            o.ps['cg'][c][k] = {
-                id: i,
-                c: ct
-            };
+            if (!o.ps['cg'][c]) o.ps['cg'][c] = {};
+            o.ps['cg'][c][k] = {id: i,c: ct};
         }
         return o;
     },
