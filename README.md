@@ -55,7 +55,7 @@
   </nav>
   </div>
   <div id='m'></div>
-  <script src='./rou.m.js?<?php echo rand(1,100000);?>'></script>
+  <script src='./rou.m.js'></script>
   <script>
   rou.x('m').a('def','hm',function(key,id,pn){
       console.log('welcome page:'+key+' id:'+id);
