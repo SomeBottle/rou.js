@@ -18,7 +18,7 @@
   1. mode->注册模式.要注册主页,模式是'def';要注册普通页面，模式是'reg'.如果注册了主页，加载页面时如果url没有hash，则会自动跳转到主页.  
   2. key->注册的页面hash键.  
   3. func/html->该页面要执行的函数/要打印的html.**当该项为函数时**，默认有**三个回调变量key和id还有pn**,key是该页的hash键,id是该页的注册id,pn是**分割"/"后的数组**，例如请求的url是http://xxx/#!page/1/site ,则返回的数组是['1','site'].  
-  4. category->注册页面的分类（**不支持问号?和空白**），**如果不填，默认是'!'**.假设category是'!',key是'page',则访问 http://xxx/#!page 时会执行func/html.  
+  4. category->注册页面的分类（**不支持问号?** ），**如果不填，默认是'!'，如果填'',则不需要分割符**.假设category是'!',key是'page',则访问 http://xxx/#!page 时会执行func/html.  
   5. id->注册页面的id，如果不填就是自动生成，通过自定义你可以定义文章的页面唯一id.    
   
 * 运转吧！  
@@ -52,6 +52,7 @@
 	  <a href="#!about">关于</a>
 	  <a href="#!link">友情链接</a>
 	  <a href="#@@ct1/1/2">运行函数</a>
+	  <a href="#blank">空白</a>
   </nav>
   </div>
   <div id='m'></div>
@@ -67,6 +68,7 @@
 	  for(var i in pn) r+=pn[i]+' ';
 	  alert(r);
   },'@@')
+  .a('reg','blank','<h1>这里是没有索引符的页面</h1>','')
   .r();
   </script>
   ``` 
