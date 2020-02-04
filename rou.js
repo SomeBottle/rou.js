@@ -1,5 +1,5 @@
 var rou = {
-    ps: {def: {},cg: {}},
+    ps: {def: {},cg: {},bl:{}},
     /*routes*/
     statu: false,
     /*ifrun*/
@@ -17,6 +17,7 @@ var rou = {
         }
 		pagen.shift();
         if (u.indexOf('#') !== -1 && rq !== hk) {
+			o.ps['bl'].hasOwnProperty(rq) ? (ctg='',k=rq) : (ctg=ctg);
             var r = o.j(ctg, k)['c'],i = o.j(ctg, k)['id'];
             if (typeof r == 'function') {
                 r(k, i,pagen); /*(请求的页面,页面id,页码)例如http://xxx/#!index/2，返回的k=index,pagen=[2]*/
@@ -34,8 +35,8 @@ var rou = {
         }
     },
     j: function(c, k) {
-        const b = this.ps['cg'][c] || {[k]: {c: '',i: ''}};
-        return b[k] || {c: '',i: ''};
+        const b = this.ps['cg'][c] || (this.ps['bl'][k]||{[k]: {c: '',i: ''}});
+        return b[k] || (this.ps['bl'][k]||{c: '',i: ''});
     },
     x: function(e) { /*elementselector*/
         this.el = document.getElementById(e);
@@ -61,12 +62,13 @@ var rou = {
     a: function(t, k, ct, c = false, i = false) { /*add(type,key,content(html/func),category,id)*/
         var o = this;
         if (!i) (i = o.id,o.id += 1);/*有没有指定id，不然默认顺承*/
-		c ? c=c : c='!';/*有没有指定索引符，不然就用默认的了*/
+		c ? c=c : (''==c&&'string'==typeof c ? c=c : c='!');/*有没有指定索引符，不然就用默认的了*/
         if (t == 'def') {
             o.ps['def'] = {ky: k,id: i,c: ct};
         } else if (t == 'reg') {
-            if (!o.ps['cg'][c]) o.ps['cg'][c] = {};
-            o.ps['cg'][c][k] = {id: i,c: ct};
+            if (!o.ps['cg'][c]&&c!=='') o.ps['cg'][c] = {};
+			if (!o.ps['bl'][c]&&c==''&&c!==false) o.ps['bl'][k] = {id: i,c: ct}/*可以不要索引符*/
+			else o.ps['cg'][c][k] = {id: i,c: ct};/*有索引符的情况*/
         }
         return o;
     },
