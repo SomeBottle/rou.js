@@ -27,12 +27,6 @@
   ```
   这样能让rou.js开始监听hash改变的事件，当然，**再次执行语句能让其停止监听**.  
   
-* 注销url
-  ```javascript
-  rou.d(mode,key,category); 
-  ```
-  函数变量和注册url一样  
-  
 * 链式语法  
   ```javascript
   rou.x('m').a('def','hm',function(key,id){
