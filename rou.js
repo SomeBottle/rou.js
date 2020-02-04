@@ -71,15 +71,5 @@ var rou = {
 			else o.ps['cg'][c][k] = {id: i,c: ct};/*有索引符的情况*/
         }
         return o;
-    },
-    d: function(t, k, c = false) { /*del(type,key,category)*/
-        var o = this;
-        c ? c=c : c='!';/*有没有指定索引符，不然就用默认的了*/
-        if (t == 'def') {
-            o.ps['def'] = {};
-        } else if (t == 'reg') {
-            delete o.ps['cg'][c][k];
-        }
-        return o;
     }
 };
