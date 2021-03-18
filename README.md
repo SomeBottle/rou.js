@@ -20,6 +20,10 @@
   3. func/html->该页面要执行的函数/要打印的html.**当该项为函数时**，默认有**三个回调变量key和id还有pn**,key是该页的hash键,id是该页的注册id,pn是**分割"/"后的数组**，例如请求的url是http://xxx/#!page/1/site ,则返回的数组是['1','site'].  
   4. category->注册页面的索引符（**不支持问号?** ），**如果不填，默认是'!'，如果填'',则不需要索引符**.假设category是'!',key是'page',则访问 http://xxx/#!page 时会执行func/html.  
   5. id->注册页面的id，如果不填就是自动生成，通过自定义你可以定义文章的页面唯一id.    
+ 
+* 小贴士  
+  
+  当注册的mode为def，也就是**注册主页**的时候，是没有指定索引符的，如果你要把#!index设为主页，你可以这样写：```rou.a('def','!index','hello!')```.当有回调函数的时候，也就是这样：```rou.a('def','!index',function(key,b,pn){})```，回调函数**在主页**的第一个参数(```function(key,b,pn)```中的key)为```home```.  
   
 * 运转吧！  
   ```javascript
