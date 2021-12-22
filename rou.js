@@ -1,5 +1,6 @@
+'use strict';
 var rou = {
-    ps: { def: {}, cg: {}, bl: {} },
+    ps: { def: {}, cg: {}, bl: {} }, // def - 默认页面, cg - 使用特定索引符的页面，bl - 没有索引符的页面
     /*routes*/
     statu: false,
     /*ifrun*/
@@ -9,7 +10,7 @@ var rou = {
     c: function () { /*checker*/
         var o = this, u = window.location.href, rq = o.sp(u), ctg, k, pagen, hk = o.ps.def.ky;/*homekey*/
         rq ? (ctg = rq.substring(0, 1), pagen = rq.split('/')) : (ctg = '', pagen = []); /*获取页面索引符category(!,@之类的)，分割"/"*/
-        if (pagen.length > 1) rq = pagen[0];/*如果存在页码，自动剔除页码*/
+        if (pagen.length > 1) rq = pagen[0];/*如果存在标识符，自动剔除标识符*/
         for (var vt in o.ps.cg) if (ctg !== '' && vt.indexOf(ctg) !== -1 && rq.indexOf(vt) !== -1) {
             k = rq.replace(vt, ''); /*获得请求的页面*/
             ctg = vt; /*检索多位索引符(@@之类的)*/
@@ -43,8 +44,9 @@ var rou = {
         return this;
     },
     sp: function (y) { /*splitter*/
-        var s = y.split('?');
-        return (s[0].split('/#'))[1];
+        let s = y.split('?')[0].split('#');
+        s.shift();
+        return s.join('#');
     },
     r: function () { /*run/stop*/
         var o = this;
@@ -63,9 +65,9 @@ var rou = {
         var o = this;
         if (!i) (i = o.id, o.id += 1);/*有没有指定id，不然默认顺承*/
         c ? c = c : ('' == c && 'string' == typeof c ? c = c : c = '!');/*有没有指定索引符，不然就用默认的了*/
-        if (t == 'def') {
-            o.ps['def'] = { ky: k, id: i, c: ct };
-        } else if (t == 'reg') {
+        if (t == 'def') { // 主页注册模式
+            o.ps['def'] = { ky: k, id: i, c: ct }; // ky-标识键,id-页面id,c-调用的内容
+        } else if (t == 'reg') { // 普通页面注册模式
             if (!o.ps['cg'][c] && c !== '') o.ps['cg'][c] = {};
             if (!o.ps['bl'][c] && c == '' && c !== false) o.ps['bl'][k] = { id: i, c: ct }/*可以不要索引符*/
             else o.ps['cg'][c][k] = { id: i, c: ct };/*有索引符的情况*/
