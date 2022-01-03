@@ -1,0 +1,26 @@
+<meta charset="UTF-8"/> 
+<div>
+<nav>
+    <a href="#hm" class="active">首页</a>
+    <a href="#!about">关于</a>
+    <a href="#!link">友情链接</a>
+    <a href="#@@ct1/1/2">运行函数</a>
+    <a href="#blank">空白</a>
+</nav>
+</div>
+<div id='m'></div>
+<script src='./rou.m.js'></script>
+<script>
+rou.x('m').a('def','hm',function(key,id,pn){
+    console.log('welcome page:'+key+' id:'+id);
+    console.log(pn);
+}).a('reg','about','<h1>这里是关于页面</h1>')
+.a('reg','link','<h1>这里是友情链接</h1>')
+.a('reg','ct1',function(key,id,pn){
+    var r='这里是以@@为索引的页面!\n页码分割:';
+    for(var i in pn) r+=pn[i]+' ';
+    alert(r);
+},'@@')
+.a('reg','blank','<h1>这里是没有索引符的页面</h1>','')
+.r();
+</script>

@@ -1,17 +1,18 @@
 'use strict';
 var rou = {
     ps: { def: {}, cg: {}, bl: {} }, // def - 默认页面, cg - 使用特定索引符的页面，bl - 没有索引符的页面
-    /*routes*/
-    statu: false,
-    /*ifrun*/
+    status: false,// running status
     id: 0,
-    el: '',
-    /*element*/
+    el: '',// element
+    unknown: false,
+    uk: function (func) {
+        this.unknown = func;
+    },
     c: function () { /*checker*/
         var o = this, u = window.location.href, rq = o.sp(u), ctg, k, pagen, hk = o.ps.def.ky;/*homekey*/
         rq ? (ctg = rq.substring(0, 1), pagen = rq.split('/')) : (ctg = '', pagen = []); /*获取页面索引符category(!,@之类的)，分割"/"*/
         if (pagen.length > 1) rq = pagen[0];/*如果存在标识符，自动剔除标识符*/
-        for (var vt in o.ps.cg) if (ctg !== '' && vt.indexOf(ctg) !== -1 && rq.indexOf(vt) !== -1) {
+        for (let vt in o.ps.cg) if (ctg !== '' && vt.indexOf(ctg) !== -1 && rq.indexOf(vt) !== -1) {
             k = rq.replace(vt, ''); /*获得请求的页面*/
             ctg = vt; /*检索多位索引符(@@之类的)*/
             break;
@@ -24,6 +25,9 @@ var rou = {
                 r(k, i, pagen); /*(请求的页面,页面id,页码)例如http://xxx/#!index/2，返回的k=index,pagen=[2]*/
             } else if (r !== '') {
                 o.el.innerHTML = r;
+            } else if (o.unknown) {// 找不到页面时调用函数
+                k = rq; // 获得请求的页面标识符
+                o.unknown(k, pagen);
             }
         } else if (hk) {
             var r = o.ps['def']['c'], i = o.ps['def']['id'];
@@ -51,13 +55,13 @@ var rou = {
     r: function () { /*run/stop*/
         var o = this;
         o.ev = o.ev || o.c.bind(o);/*绑定对象，事件监听器是在window运行的，因此要让事件实名认证！*/
-        if (!o.statu) {
+        if (!o.status) {
             window.addEventListener('hashchange', o.ev);
             o.c();
-            o.statu = true;
+            o.status = true;
         } else {
             window.removeEventListener('hashchange', o.ev);
-            o.statu = false;
+            o.status = false;
         }
         return o;
     },
