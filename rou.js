@@ -7,6 +7,7 @@ var rou = {
     unknown: false,
     uk: function (func) {
         this.unknown = func;
+        return this;
     },
     c: function () { /*checker*/
         var o = this, u = window.location.href, rq = o.sp(u), ctg, k, pagen, hk = o.ps.def.ky;/*homekey*/
